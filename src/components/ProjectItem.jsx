@@ -8,15 +8,15 @@ import {
 
 class ProjectItem extends Component{
 	render(){
-		const {link,name,performers,deadline} = this.props.project;
+		const {link,name,performers,deadline,serverKey} = this.props.project;
 		return(
 			<TableRow>
 				<TableRowColumn><a href={link}>{name}</a></TableRowColumn>
 				<TableRowColumn>
-					<SelectUsers title="Ответственные" person={performers.main}/>
+					<SelectUsers keyProject={serverKey} id='main' title="Ответственные" person={performers.main}/>
 				</TableRowColumn>
 				<TableRowColumn>
-					<SelectUsers title="Ответственные" person={performers.inside} />
+					<SelectUsers keyProject={serverKey} id='inside' title="Ответственные" person={performers.inside} />
 				</TableRowColumn>
 				<TableRowColumn>
 					<DatePicker

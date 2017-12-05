@@ -1,13 +1,20 @@
 import React, {Component} from 'react';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
-import {connect} from 'react-redux'
+import {connect} from 'react-redux';
+import * as firebase from 'firebase';
 
 
 class SelectUsers extends Component{
 
 	handleChange(e,data,key){
-		console.log(key);
+		let updates = {};
+		if(this.props.id==='main'){
+			updates['/main']=key;
+		} else if(this.props.id==='inside'){
+			updates['/inside']=key;
+		}
+		firebase.database().ref(`/projects/${this.props.keyProject}/performers`).update(updates);
 	}
 
 	render(){
