@@ -1,6 +1,6 @@
 import {SET_USERS} from '../constants';
 
-export default (state={},action)=>{
+export default (state=[],action)=>{
 	switch (action.type){
 		case SET_USERS:
 			return action.users;

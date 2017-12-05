@@ -9,22 +9,15 @@ import {
 } from 'material-ui/Table';
 
 class ProjectItem extends Component{
-	constructor(){
-		super();
-		const minDate = new Date();
-		minDate.setFullYear(minDate.getFullYear());
-		this.state={
-			minDate: minDate
-		}
-	}
 	render(){
+		const {link,name,performers,deadline} = this.props.project;
 		return(
 			<TableRow>
-				<TableRowColumn>Test Project</TableRowColumn>
+				<TableRowColumn><a href={link}>{name}</a></TableRowColumn>
 				<TableRowColumn>
 					<SelectField
 						floatingLabelText="Ответственный"
-						value={1}
+						value={performers.main}
 					>
 						<MenuItem value={1} primaryText="Never" />
 						<MenuItem value={2} primaryText="Every Night" />
@@ -36,7 +29,7 @@ class ProjectItem extends Component{
 				<TableRowColumn>
 					<SelectField
 						floatingLabelText="Ответственный"
-						value={1}
+						value={performers.inside}
 					>
 						<MenuItem value={1} primaryText="Never" />
 						<MenuItem value={2} primaryText="Every Night" />
@@ -48,7 +41,7 @@ class ProjectItem extends Component{
 				<TableRowColumn>
 					<DatePicker
 						floatingLabelText="Дата"
-						defaultDate={this.state.minDate}
+						defaultDate={new Date(deadline)}
 					/>
 				</TableRowColumn>
 			</TableRow>

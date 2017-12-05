@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import {projectsDB} from '../firebase';
+import {projectsDB,personalDB} from '../firebase';
 import {connect} from 'react-redux';
-import {setProjects} from '../actions';
+import {setProjects,setUsers} from '../actions';
 import {
 	Table,
 	TableBody,
@@ -43,6 +43,15 @@ class ListTableProject extends Component{
 			});
 			this.props.setProjects(projects);
 		});
+		personalDB.on('value', snap=>{
+			let users=[];
+			snap.forEach((user)=>{
+				const {active,id,name,post} = user.val();
+				const serverKey = user.key;
+				users.push({active,id,name,post,serverKey});
+			});
+			this.props.setUsers(users);
+		});
 	}
 
 	render(){
@@ -83,8 +92,9 @@ class ListTableProject extends Component{
 
 function mapStateToProps(state) {
 	return {
-		projects: state.projects
+		projects: state.projects,
+		usersCompany: state.usersCompany
 	}
 }
 
-export default connect(mapStateToProps,{setProjects})(ListTableProject);
+export default connect(mapStateToProps,{setProjects,setUsers})(ListTableProject);

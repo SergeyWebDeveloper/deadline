@@ -1,4 +1,4 @@
-import {SIGNED_IN,SET_PROJECTS} from '../constants';
+import {SIGNED_IN, SET_PROJECTS, SET_USERS} from '../constants';
 
 
 
@@ -21,7 +21,7 @@ export function setProjects(projects) {
 
 export function setUsers(users) {
 	return {
-		type: SET_PROJECTS,
+		type: SET_USERS,
 		users
 	}
 }
