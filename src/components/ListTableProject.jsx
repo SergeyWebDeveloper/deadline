@@ -1,15 +1,16 @@
 import React, {Component} from 'react';
+import {projectsDB} from '../firebase';
+import {connect} from 'react-redux';
+import {setProjects} from '../actions';
 import {
 	Table,
 	TableBody,
 	TableHeader,
 	TableHeaderColumn,
-	TableRow,
-	TableRowColumn,
+	TableRow
 } from 'material-ui/Table';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
-import DatePicker from 'material-ui/DatePicker';
+import ProjectItem from './ProjectItem';
+
 
 
 
@@ -18,25 +19,36 @@ class ListTableProject extends Component{
 
 	constructor(){
 		super();
-		const minDate = new Date();
-		minDate.setFullYear(minDate.getFullYear());
 		this.state={
 			fixedHeader: true,
 			fixedFooter: true,
 			stripedRows: false,
-			showRowHover: true,
-			selectable: false,
+			showRowHover: false,
+			selectable: true,
 			multiSelectable: false,
 			enableSelectAll: false,
+			deselectOnClickaway: true,
 			showCheckboxes: true,
 			height: '300px',
-			minDate: minDate
 		};
+	}
+
+	componentDidMount(){
+		projectsDB.on('value', snap=>{
+			let projects=[];
+			snap.forEach((project)=>{
+				const {completed,deadline,id,link,name,performers} = project.val();
+				const serverKey = project.key;
+				projects.push({completed,deadline,id,link,name,performers,serverKey});
+			});
+			this.props.setProjects(projects);
+		});
 	}
 
 	render(){
 		return(
 			<div className="table__info">
+				{!this.props.projects.length ? 'Загрузка...' : ''}
 				<Table
 					height={this.state.height}
 					fixedHeader={this.state.fixedHeader}
@@ -57,39 +69,11 @@ class ListTableProject extends Component{
 						</TableRow>
 					</TableHeader>
 					<TableBody>
-						<TableRow>
-							<TableRowColumn>Test Project</TableRowColumn>
-							<TableRowColumn>
-								<SelectField
-									floatingLabelText="Ответственный"
-									value={1}
-								>
-									<MenuItem value={1} primaryText="Never" />
-									<MenuItem value={2} primaryText="Every Night" />
-									<MenuItem value={3} primaryText="Weeknights" />
-									<MenuItem value={4} primaryText="Weekends" />
-									<MenuItem value={5} primaryText="Weekly" />
-								</SelectField>
-							</TableRowColumn>
-							<TableRowColumn>
-								<SelectField
-									floatingLabelText="Ответственный"
-									value={1}
-								>
-									<MenuItem value={1} primaryText="Never" />
-									<MenuItem value={2} primaryText="Every Night" />
-									<MenuItem value={3} primaryText="Weeknights" />
-									<MenuItem value={4} primaryText="Weekends" />
-									<MenuItem value={5} primaryText="Weekly" />
-								</SelectField>
-							</TableRowColumn>
-							<TableRowColumn>
-								<DatePicker
-									floatingLabelText="Дата"
-									defaultDate={this.state.minDate}
-								/>
-							</TableRowColumn>
-						</TableRow>
+						{
+							this.props.projects.map((project)=>{
+								return (<ProjectItem key={project.serverKey} project={project} />);
+							})
+						}
 					</TableBody>
 				</Table>
 			</div>
@@ -97,4 +81,10 @@ class ListTableProject extends Component{
 	}
 }
 
-export default ListTableProject;
+function mapStateToProps(state) {
+	return {
+		projects: state.projects
+	}
+}
+
+export default connect(mapStateToProps,{setProjects})(ListTableProject);

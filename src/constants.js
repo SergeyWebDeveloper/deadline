@@ -1,3 +1,3 @@
 export const SIGNED_IN = 'SIGNED_IN';
-export const ADD_USERS = 'ADD_USERS';
-export const ADD_PROJECTS = 'ADD_PROJECTS';
+export const SET_USERS = 'SET_USERS';
+export const SET_PROJECTS = 'SET_PROJECTS';
