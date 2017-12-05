@@ -2,10 +2,12 @@ import React, {Component} from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 // import Personal from './Personal';
+import ListTableProject from './ListTableProject';
 import {firebaseApp} from '../firebase';
 import {connect} from 'react-redux';
 
 class App extends Component{
+
 
 	signOutGoogle(){
 		firebaseApp.auth().signOut();
@@ -19,6 +21,11 @@ class App extends Component{
 					<p>Вы вошли как: <strong>{user.name}</strong></p>
 					<p>Ваш email: <em>{user.email}</em></p>
 				</div>
+
+
+				<ListTableProject />
+
+
 
 				{/*<Personal />*/}
 				<RaisedButton
